@@ -1,4 +1,3 @@
-// $Id: BlinkToRadioC.nc,v 1.6 2010-06-29 22:07:40 scipio Exp $
 #include <Timer.h>
 #include "BlinkToRadio.h"
 #include "printf.h" 
@@ -7,7 +6,6 @@
 module BlinkToRadioC {
   uses interface Boot;
   uses interface Leds;
-//  uses interface Timer<TMilli> as Timer0;
   uses interface Packet;
   uses interface AMPacket;
   uses interface AMSend;
