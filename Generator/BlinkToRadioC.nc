@@ -23,6 +23,9 @@ implementation {
 
     printf("Telosb mote is booted. Starting radio...\n");
     printfflush();
+
+    counter = 0;
+
     call AMControl.start();
     call Leds.led1On();
   }
@@ -40,11 +43,20 @@ implementation {
  event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
 
     if (len == sizeof(BlinkToRadioMsg)) {
-      BlinkToRadioMsg* btrpkt = (BlinkToRadioMsg*)payload;
-      call Leds.led2Toggle();
-      printf("NODE ID %d \n", btrpkt->nodeid);
+      BlinkToRadioMsg* btrpkt;
+      call Leds.led2On();
+      // Increment the packet counter
+      counter++;
+
+      // Read payload
+       btrpkt = (BlinkToRadioMsg*)payload;
+      
+
+      printf("NODE ID %d, nr %d \n", btrpkt->nodeid, counter);
       printfflush();
+
     }
+    call Leds.led2Off();
     return msg;
   }
 
