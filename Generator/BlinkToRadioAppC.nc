@@ -63,6 +63,11 @@ implementation {
   components PrintfC;
   components SerialStartC;
 
+  components new TimerMilliC() as TimeCount;
+  App.TimeCount -> TimeCount;
+
+  components CC2420ActiveMessageC;
+  App -> CC2420ActiveMessageC.CC2420Packet;
 
   App.Boot -> MainC;
   App.Leds -> LedsC;

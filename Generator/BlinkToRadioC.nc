@@ -1,7 +1,8 @@
 // $Id: BlinkToRadioC.nc,v 1.6 2010-06-29 22:07:40 scipio Exp $
 #include <Timer.h>
 #include "BlinkToRadio.h"
-#include "printf.h"
+#include "printf.h" 
+
 
 module BlinkToRadioC {
   uses interface Boot;
@@ -12,22 +13,31 @@ module BlinkToRadioC {
   uses interface AMSend;
   uses interface Receive;
   uses interface SplitControl as AMControl;
+  uses interface CC2420Packet;
+  uses interface Timer<TMilli> as TimeCount;
 }
-implementation {
-
+implementation { 
+  uint16_t rssi;
   uint16_t counter;
   message_t pkt;
   bool busy = FALSE;
+  uint16_t time_counter;
+  bool timerStarted = FALSE;
 
   event void Boot.booted() {
 
     printf("Telosb mote is booted. Starting radio...\n");
     printfflush();
 
-    counter = 0;
+    counter = 0; // This counter counts number of packages sent
+    time_counter = 0; // count relative time
 
     call AMControl.start();
     call Leds.led1On();
+  }
+
+  event void TimeCount.fired() {
+      time_counter++;
   }
 
   event void AMControl.startDone(error_t err) {
@@ -39,20 +49,29 @@ implementation {
     }
   }
 
+ 
 
  event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
 
     if (len == sizeof(BlinkToRadioMsg)) {
       BlinkToRadioMsg* btrpkt;
+
+      if (!timerStarted) {
+        call TimeCount.startPeriodic(1);
+        timerStarted = TRUE;
+      }
       call Leds.led2On();
+
       // Increment the packet counter
       counter++;
 
       // Read payload
        btrpkt = (BlinkToRadioMsg*)payload;
       
+      rssi = call CC2420Packet.getRssi(msg);
 
-      printf("NODE ID %d, nr %d \n", btrpkt->nodeid, counter);
+      // time = call LocalTime.get();
+      printf("NODE ID %d, seq: %d rssi: %d time: %d\n", btrpkt->nodeid, counter, rssi, time_counter);
       printfflush();
 
     }
