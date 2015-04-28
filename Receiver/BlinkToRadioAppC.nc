@@ -62,6 +62,8 @@ implementation {
   components new AMReceiverC(AM_BLINKTORADIO);
   components PrintfC;
   components SerialStartC;
+  
+  components CC2420ControlP;
 
   components new TimerMilliC() as TimeCount;
   App.TimeCount -> TimeCount;
