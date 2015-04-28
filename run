@@ -1,0 +1,10 @@
+#!/bin/bash
+
+make telosb
+make telosb reinstall 
+
+sleep 5
+
+java net.tinyos.sf.SerialForwarder -comm serial@/dev/ttyUSB0:telosb &
+
+java net.tinyos.tools.Listen
