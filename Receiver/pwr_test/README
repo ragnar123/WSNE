@@ -1,0 +1,22 @@
+
+Altering the RF power in Generator makefile:
+
+    PFLAGS += -DCC2420_DEF_RFPOWER=31
+
+
+Data: 
+2 files:
+    - pwr_test_data      : Ptx=-25dBm : RFPOWER=3
+    - pwr_test_data_high : Ptx=0dBm   : RFPOWER=31
+
+100 measurements. Test setup (phyiscal)
+
+
+Results:
+The RSSI value is significantly higher after setting it to maximum.
+
+
+
+
+
+
