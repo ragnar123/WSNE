@@ -1,5 +1,4 @@
-COMPONENT=ReceiverAppC
-CFLAGS += -I$(TOSDIR)/lib/printf
+COMPONENT=GeneratorAppC
 include $(MAKERULES)
 CFLAGS += -DTOSH_DATA_LENGTH=114
 

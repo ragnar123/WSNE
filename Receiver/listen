@@ -1,8 +1,2 @@
 #!/bin/bash
-
-make telosb
-make telosb reinstall 
-
-sleep 3
-
 java net.tinyos.tools.PrintfClient -comm serial@/dev/ttyUSB0:telosb 
